@@ -1,6 +1,8 @@
 #include <iostream>
-
+void speedometer ();
+void stitching ();
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+   // speedometer ();
+    stitching ();
     return 0;
 }
