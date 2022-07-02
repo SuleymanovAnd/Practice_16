@@ -30,7 +30,7 @@ void stitching (){
         for (int i = count_symbol (stoi (fractional_part)); i > 0 ; i--){
             divider *= 10;
         }
-        cout << stod(fractional_part) << "  "<<divider << endl;
+
         stitched_number = stod (integer_part) + (stod(fractional_part) / divider);
     }
     cout << "Your number: " << stitched_number;
