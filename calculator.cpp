@@ -6,6 +6,7 @@
 using namespace std;
 
 void calculator (){
+    cout << "input example: ";
     string buffer;
     cin >> buffer;
     stringstream buffer_stream (buffer);

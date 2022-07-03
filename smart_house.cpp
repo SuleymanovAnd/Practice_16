@@ -60,25 +60,31 @@ void smart_house (){
                 stringstream error_stream (buffer);
                 error_stream >>tOutside >> tInside >> movOutside >> onLightInHouse;
             }
+
             bool bMovOutside = stringInBool (movOutside);
             bool bOnLightInHouse = stringInBool (onLightInHouse);
             //cout << bMovOutside << bOnLightInHouse;
 
-
+            //цветовая температура
             if (time >=16 && time <=20) { color_temperature -= 460;}
             if (time == 0) {color_temperature = 5000;}
 
+            // свет в доме
             if (bOnLightInHouse) {
                if (!(lIn_state & LIGHTS_INSIDE)) {lIn_state |= LIGHTS_INSIDE;
                cout << "# LIGHT ON"<< endl;}
                 cout << "color temperature = " << color_temperature << endl;
             } else if (lIn_state & LIGHTS_INSIDE) {lIn_state &= ~LIGHTS_INSIDE;cout << "# LIGHT OFF"<< endl;}
 
+            // обогрев насоса
            if ((!(water_pump_state & WATER_PIPE_HEATING))&& tOutside < 0) {water_pump_state |= WATER_PIPE_HEATING ;
                cout << "# WATER PIPE HEATING is ON" << endl;}
            else if (tOutside > 5 && water_pump_state & WATER_PIPE_HEATING) {water_pump_state &= ~WATER_PIPE_HEATING;
                cout << "# WATER PIPE HEATING is OFF" << endl;}
-            cout << ((time < 5 || time >= 16) && (!(lOut_state & LIGHTS_OUTSIDE)));
+
+           // cout << ((time < 5 || time >= 16) && (!(lOut_state & LIGHTS_OUTSIDE)));
+
+           // свет снаружи
            if ( (time < 5 || time >= 16) && (!(lOut_state & LIGHTS_OUTSIDE))){
                if (bMovOutside) {lOut_state |= LIGHTS_OUTSIDE ; cout << "# LIGHTS OUTSIDE is ON"<< endl;}
                else {lOut_state &= ~LIGHTS_OUTSIDE; cout << "# LIGHTS OUTSIDE is OFF"<< endl;}
@@ -86,11 +92,13 @@ void smart_house (){
                lOut_state &= ~LIGHTS_OUTSIDE;
                cout << "# LIGHTS OUTSIDE is OFF"<< endl;}
 
+            // обогрев дома
            if ((!(heater_state & HEATERS)) && tInside < 22 ) {heater_state |= HEATERS;
            cout << "# HEATERS in house ON"<<endl;}
            else if (tInside >=25 && heater_state & HEATERS) {heater_state &= ~HEATERS;
            cout << "# HEATERS in house OFF"<<endl;}
 
+            //кондиционер
            if (tInside >=30 && !(conditioner_state & CONDITIONER)) {conditioner_state |= CONDITIONER;
                cout << "# CONDITIONER is ON"<<endl;}
            else if (tInside <= 25 && conditioner_state & CONDITIONER) {conditioner_state &= ~CONDITIONER;
